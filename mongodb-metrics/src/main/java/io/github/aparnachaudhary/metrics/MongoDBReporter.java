@@ -42,6 +42,7 @@ import static com.codahale.metrics.MetricRegistry.name;
  * A reporter to publish metric values to a MongoDB server.
  *
  * @author aparna
+ * @author Stephan Richter
  */
 public class MongoDBReporter extends ScheduledReporter {
 
@@ -72,6 +73,7 @@ public class MongoDBReporter extends ScheduledReporter {
         private MongoClientOptions mongoClientOptions;
         private String databaseName = "metricstore";
         private Map<String, Object> additionalFields;
+	private MongoDatabase mongoDatabase;
 
         private Builder(MetricRegistry registry) {
             this.registry = registry;
@@ -104,6 +106,18 @@ public class MongoDBReporter extends ScheduledReporter {
             this.prefix = prefix;
             return this;
         }
+
+	/**
+	 * Use existing databse connection instead of constructing a new one.
+	 * This has preference over withDatabaseName, serverAddress,mongoCredentials and mongoClientOptions.
+	 *
+	 * @param mongoDB an existing mongo db connection
+	 * @return {@code this}
+	 */
+	public Builder connect(final MongoDatabase mongoDB) {
+		mongoDatabase = mongoDB;
+		return this;
+	}
 
         /**
          * Convert all the rates to a certain TimeUnit, defaults to TimeUnit.SECONDS.
@@ -199,26 +213,15 @@ public class MongoDBReporter extends ScheduledReporter {
          * @return a {@link MongoDBReporter}
          */
         public MongoDBReporter build() {
-            return new MongoDBReporter(registry,
-                    databaseName,
-                    serverAddresses,
-                    mongoCredentials,
-                    mongoClientOptions,
-                    clock,
-                    prefix,
-                    rateUnit,
-                    durationUnit,
-                    filter,
-                    additionalFields);
+		if (mongoDatabase == null) {
+			mongoDatabase = getDB(serverAddresses, mongoCredentials, databaseName, mongoClientOptions);
+		}
+		return new MongoDBReporter(registry, clock, prefix, rateUnit, durationUnit, filter, additionalFields, mongoDatabase);
         }
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MongoDBReporter.class);
 
-    private final ServerAddress[] serverAddresses;
-    private final MongoCredential[] mongoCredentials;
-    private final MongoClientOptions mongoClientOptions;
-    private final String databaseName;
     private final Clock clock;
     private final String prefix;
     private final MongoDatabase mongoDatabase;
@@ -228,17 +231,21 @@ public class MongoDBReporter extends ScheduledReporter {
             MongoCredential[] mongoCredentials, MongoClientOptions mongoClientOptions,
             Clock clock, String prefix, TimeUnit rateUnit, TimeUnit durationUnit,
             MetricFilter filter, Map<String, Object> additionalFields) {
-        super(registry, "mongodb-reporter", filter, rateUnit, durationUnit);
-        this.databaseName = databaseName;
-        this.serverAddresses = serverAddresses;
-        this.mongoCredentials = mongoCredentials;
-        this.mongoClientOptions = mongoClientOptions;
-        this.clock = clock;
-        this.prefix = prefix;
-        this.additionalFields = additionalFields;
-        this.mongoDatabase = getDB();
+	this(registry, clock, prefix, rateUnit, durationUnit, filter, additionalFields, getDB(serverAddresses, mongoCredentials, databaseName, mongoClientOptions));
     }
 
+
+	public MongoDBReporter(final MetricRegistry registry, final Clock clock, final String prefix, final TimeUnit rateUnit, final TimeUnit durationUnit,
+			final MetricFilter filter, final Map<String, Object> additionalFields, final MongoDatabase mongoDatabase) {
+		super(registry, "mongodb-reporter", filter, rateUnit, durationUnit);
+		this.clock = clock;
+		this.prefix = prefix;
+		this.additionalFields = additionalFields;
+		this.mongoDatabase = mongoDatabase;
+	}
+
+
+    @SuppressWarnings("rawtypes")
     @Override
     public void report(SortedMap<String, Gauge> gauges,
             SortedMap<String, Counter> counters,
@@ -278,6 +285,7 @@ public class MongoDBReporter extends ScheduledReporter {
 
     }
 
+    @SuppressWarnings("rawtypes")
     private void reportGauge(final String name, final Gauge gauge, final Date timestamp) {
         final MongoCollection coll = mongoDatabase.getCollection("gauge");
         final Object value = gauge.getValue();
@@ -294,6 +302,7 @@ public class MongoDBReporter extends ScheduledReporter {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     private void reportCounter(final String name, final Counter counter, final Date timestamp) {
         final MongoCollection coll = mongoDatabase.getCollection("counter");
 
@@ -309,6 +318,8 @@ public class MongoDBReporter extends ScheduledReporter {
         }
     }
 
+
+    @SuppressWarnings("rawtypes")
     private void reportHistogram(final String name, final Histogram histogram, final Date timestamp) {
         final MongoCollection coll = mongoDatabase.getCollection("histogram");
 
@@ -325,6 +336,8 @@ public class MongoDBReporter extends ScheduledReporter {
         }
     }
 
+
+    @SuppressWarnings("rawtypes")
     private void reportMetered(final String name, final Metered meter, final Date timestamp) {
         final MongoCollection coll = mongoDatabase.getCollection("metered");
         final MeteredEntity entity = new MeteredEntity(meter);
@@ -337,6 +350,8 @@ public class MongoDBReporter extends ScheduledReporter {
         }
     }
 
+
+    @SuppressWarnings("rawtypes")
     private void reportTimer(final String name, final Timer timer, final Date timestamp) {
         final MongoCollection coll = mongoDatabase.getCollection("timer");
         final TimerEntity entity = new TimerEntity(timer);
@@ -350,6 +365,8 @@ public class MongoDBReporter extends ScheduledReporter {
         }
     }
 
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private void storeInMongo(MongoCollection coll, BaseEntity entity) {
         final Document document = new Document(entity);
 
@@ -361,7 +378,9 @@ public class MongoDBReporter extends ScheduledReporter {
         coll.insertOne(document);
     }
 
-    private MongoDatabase getDB() {
+
+    private static MongoDatabase getDB(final ServerAddress[] serverAddresses, final MongoCredential[] mongoCredentials,
+			final String databaseName, final MongoClientOptions mongoClientOptions) {
         MongoClient mongoClient = null;
         if (mongoCredentials == null) {
             mongoClient = new MongoClient(Arrays.asList(serverAddresses), mongoClientOptions);
