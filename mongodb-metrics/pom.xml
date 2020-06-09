@@ -10,50 +10,43 @@
 	<packaging>jar</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Reporter extension for the Codahale/DropWizard Metrics library which stores data in MongoDB</description>
+	<url>http://github.com/keawe-software/mongodb-metrics-reporter</url>
+	<inceptionYear>2015</inceptionYear>
 
-	<dependencies>
-		<!-- ==================== -->
-		<!-- CORE DEPENDENCIES -->
-		<!-- ==================== -->
-		<dependency>
-			<groupId>io.dropwizard.metrics</groupId>
-			<artifactId>metrics-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongo-java-driver</artifactId>
-		</dependency>
-		<!-- ==================== -->
-		<!-- LOGGING DEPENDENCIES -->
-		<!-- ==================== -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<!-- ==================== -->
-		<!-- TEST DEPENDENCIES -->
-		<!-- ==================== -->
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>de.flapdoodle.embed</groupId>
-			<artifactId>de.flapdoodle.embed.mongo</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>aparnac</id>
+			<name>Aparna Chaudhary</name>
+			<email>aparna.chaudhary@gmail.com</email>
+		</developer>
+		<developer>
+			<id>StephanRichter</id>
+			<name>Stephan Richter</name>
+			<email>s.richter@keawe.de</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<url>http://github.com/keawe-software/mongodb-metrics-reporter</url>
+		<connection>scm:git:git@github.com:keawe-software/mongodb-metrics-reporter.git</connection>
+		<developerConnection>scm:git:git@github.com:keawe-software/mongodb-metrics-reporter.git</developerConnection>
+		<tag>0.0.2</tag>
+	</scm>
+
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/keawe-software/mongodb-metrics-reporter/issues</url>
+	</issueManagement>
+
+
 
 	<distributionManagement>
 		<snapshotRepository>
@@ -92,59 +85,58 @@
 		<version.slf4j-api>1.7.30</version.slf4j-api>
 		<version.site-maven-plugin>0.12</version.site-maven-plugin>
 	</properties>
-	
-		<dependencyManagement>
-		<dependencies>
-			<!-- ==================== -->
-			<!-- CORE DEPENDENCIES -->
-			<!-- ==================== -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-core</artifactId>
-				<version>${version.metrics-core}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.mongodb</groupId>
-				<artifactId>mongo-java-driver</artifactId>
-				<version>${version.mongo-java-driver}</version>
-			</dependency>
-			<!-- ==================== -->
-			<!-- LOGGING DEPENDENCIES -->
-			<!-- ==================== -->
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${version.slf4j-api}</version>
-			</dependency>
-			<!-- ==================== -->
-			<!-- TEST DEPENDENCIES -->
-			<!-- ==================== -->
-			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-classic</artifactId>
-				<version>${version.logback-classic}</version>
-			</dependency>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${version.junit}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.mockito</groupId>
-				<artifactId>mockito-core</artifactId>
-				<version>${version.mockito-core}</version>
-			</dependency>
-			<dependency>
-				<groupId>de.flapdoodle.embed</groupId>
-				<artifactId>de.flapdoodle.embed.mongo</artifactId>
-				<version>${version.de.flapdoodle.embed.mongo}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+
+	<dependencies>
+		<!-- ==================== -->
+		<!-- CORE DEPENDENCIES -->
+		<!-- ==================== -->
+		<dependency>
+			<groupId>io.dropwizard.metrics</groupId>
+			<artifactId>metrics-core</artifactId>
+			<version>${version.metrics-core}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>${version.mongo-java-driver}</version>
+		</dependency>
+		<!-- ==================== -->
+		<!-- LOGGING DEPENDENCIES -->
+		<!-- ==================== -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${version.slf4j-api}</version>
+		</dependency>
+		<!-- ==================== -->
+		<!-- TEST DEPENDENCIES -->
+		<!-- ==================== -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${version.logback-classic}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${version.junit}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${version.mockito-core}</version>
+		</dependency>
+		<dependency>
+			<groupId>de.flapdoodle.embed</groupId>
+			<artifactId>de.flapdoodle.embed.mongo</artifactId>
+			<version>${version.de.flapdoodle.embed.mongo}</version>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
+				<!-- COMPILING -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${version.maven-compiler-plugin}</version>
