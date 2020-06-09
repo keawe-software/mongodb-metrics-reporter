@@ -31,8 +31,7 @@ jobs:
     - name: Publish package
       run: |
         export GPG_TTY=$(tty)
-        gpg --list-secret-keys
-        mvn clean deploy
+        mvn -e clean deploy
       env:
         MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
         MAVEN_PASSWORD: ${{ secrets.OSSRH_PASS }}
