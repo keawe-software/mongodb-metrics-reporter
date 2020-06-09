@@ -5,7 +5,6 @@
 *MongoDB-Metrics-Reporter* provides a reporter for CodaHale/DropWizard Metrics library to store the metric data in MongoDB.
 This is a fork of [aparnachaudhary/mongodb-metrics-reporter](https://github.com/aparnachaudhary/mongodb-metrics-reporter), which seems to be *discontinued*.
 
-
 ## How does it work?
 
 1. Define MetricsRegistry which is a JVM wide singleton for metric data
