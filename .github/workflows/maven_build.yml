@@ -26,12 +26,12 @@ jobs:
     - name: Provide Signature key
       env:
         GPG_KEY: ${{ secrets.SIG_KEY_PRIV }}
-      run: |
-        export GPG_TTY=$(tty)
-        printf "$GPG_KEY" | base64 --decode | gpg --import
+      run: printf "$GPG_KEY" | base64 --decode | gpg --import --no-tty --batch --yes
       
     - name: Publish package
-      run: mvn clean deploy
+      run: |
+        export GPG_TTY=$(tty)
+        mvn clean deploy
       env:
         MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
         MAVEN_PASSWORD: ${{ secrets.OSSRH_PASS }}
