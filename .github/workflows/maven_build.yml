@@ -30,6 +30,8 @@ jobs:
       
     - name: Publish package
       run: |
+        echo "test" > test
+        gpg -ab test
         mvn clean deploy
       env:
         MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}

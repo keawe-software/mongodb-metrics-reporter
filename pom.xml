@@ -273,14 +273,6 @@
 						<goals>
 							<goal>sign</goal>
 						</goals>
-						<configuration>
-							<gpgArguments>
-								<arg>--batch</arg>
-								<arg>--pinentry-mode</arg>
-								<arg>loopback</arg>
-								<!-- see https://kemitix.github.io/2018/02/24/gpg-signing-failed.html -->
-							</gpgArguments>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
