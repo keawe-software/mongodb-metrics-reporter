@@ -3,26 +3,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>9</version>
-	</parent>
 	<groupId>de.keawe.metrics</groupId>
 	<artifactId>mongodb-metrics-parent</artifactId>
 	<version>0.0.4</version>
-
-	<packaging>pom</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
-	<description>Reporter extension for the Codahale/DropWizard Metrics library that stores data in MongoDB
-    </description>
+	<description>Reporter extension for the Codahale/DropWizard Metrics library that stores data in MongoDB</description>
 	<url>http://github.com/keawe-software/mongodb-metrics-reporter</url>
 	<inceptionYear>2015</inceptionYear>
-
-	<modules>
-		<module>mongodb-metrics</module>
-		<module>mongodb-metrics-docs</module>
-	</modules>
 
 	<licenses>
 		<license>
@@ -39,9 +26,10 @@
 			<email>aparna.chaudhary@gmail.com</email>
 		</developer>
 		<developer>
-			<id>StephanRichter</id>
 			<name>Stephan Richter</name>
 			<email>s.richter@keawe.de</email>
+			<organization>Keawe</organization>
+			<organizationUrl>http://www.keawe.de</organizationUrl>
 		</developer>
 	</developers>
 
@@ -58,6 +46,7 @@
 	</issueManagement>
 
 	<distributionManagement>
+		<!-- for deployment to MAVEN CENTRAL -->
 		<snapshotRepository>
 			<id>ossrh</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
@@ -94,178 +83,223 @@
 		<version.site-maven-plugin>0.12</version.site-maven-plugin>
 	</properties>
 
-	<dependencyManagement>
-		<dependencies>
-			<!-- ==================== -->
-			<!-- CORE DEPENDENCIES -->
-			<!-- ==================== -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-core</artifactId>
-				<version>${version.metrics-core}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.mongodb</groupId>
-				<artifactId>mongo-java-driver</artifactId>
-				<version>${version.mongo-java-driver}</version>
-			</dependency>
-			<!-- ==================== -->
-			<!-- LOGGING DEPENDENCIES -->
-			<!-- ==================== -->
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${version.slf4j-api}</version>
-			</dependency>
-			<!-- ==================== -->
-			<!-- TEST DEPENDENCIES -->
-			<!-- ==================== -->
-			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-classic</artifactId>
-				<version>${version.logback-classic}</version>
-			</dependency>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${version.junit}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.mockito</groupId>
-				<artifactId>mockito-core</artifactId>
-				<version>${version.mockito-core}</version>
-			</dependency>
-			<dependency>
-				<groupId>de.flapdoodle.embed</groupId>
-				<artifactId>de.flapdoodle.embed.mongo</artifactId>
-				<version>${version.de.flapdoodle.embed.mongo}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+	<dependencies>
+		<!-- ==================== -->
+		<!-- CORE DEPENDENCIES -->
+		<!-- ==================== -->
+		<dependency>
+			<groupId>io.dropwizard.metrics</groupId>
+			<artifactId>metrics-core</artifactId>
+			<version>${version.metrics-core}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>${version.mongo-java-driver}</version>
+		</dependency>
+		<!-- ==================== -->
+		<!-- LOGGING DEPENDENCIES -->
+		<!-- ==================== -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${version.slf4j-api}</version>
+		</dependency>
+		<!-- ==================== -->
+		<!-- TEST DEPENDENCIES -->
+		<!-- ==================== -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${version.logback-classic}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${version.junit}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${version.mockito-core}</version>
+		</dependency>
+		<dependency>
+			<groupId>de.flapdoodle.embed</groupId>
+			<artifactId>de.flapdoodle.embed.mongo</artifactId>
+			<version>${version.de.flapdoodle.embed.mongo}</version>
+		</dependency>
+	</dependencies>
+
 
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<!-- COMPILING -->
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>${version.maven-compiler-plugin}</version>
-					<configuration>
-						<source>${maven.compiler.source}</source>
-						<target>${maven.compiler.target}</target>
-					</configuration>
-				</plugin>
+		<plugins>
+			<plugin>
+				<!-- COMPILING -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${version.maven-compiler-plugin}</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
 
-				<plugin>
-					<!-- GENERATE ~source.jar -->
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>${version.maven-source-plugin}</version>
-					<executions>
-						<execution>
-							<id>attach-sources</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<!-- GENERATE ~javadoc.jar -->
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>${version.maven-javadoc-plugin}</version>
-					<executions>
-						<execution>
-							<id>attach-javadocs</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<!-- unit tests -->
-					<groupId>org.jacoco</groupId>
-					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>${version.jacoco-maven-plugin}</version>
-					<executions>
-						<!-- Prepare execution with Surefire -->
-						<execution>
-							<id>pre-unit-test</id>
-							<goals>
-								<goal>prepare-agent</goal>
-							</goals>
-							<configuration>
-								<propertyName>surefireArgLine</propertyName>
-							</configuration>
-						</execution>
-						<!-- Generate report after tests are run -->
-						<execution>
-							<id>post-unit-test</id>
-							<phase>test</phase>
-							<goals>
-								<goal>report</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>${version.maven-surefire-plugin}</version>
-					<configuration>
-						<argLine>${surefireArgLine}</argLine>
-						<includes>
-							<include>**/*Test.java</include>
-							<include>**/*Tests.java</include>
-						</includes>
-					</configuration>
-					<executions>
-						<execution>
-							<id>run-unit-tests</id>
-							<goals>
-								<goal>test</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-report-plugin</artifactId>
-					<version>${version.maven-surefire-plugin}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.eluder.coveralls</groupId>
-					<artifactId>coveralls-maven-plugin</artifactId>
-					<version>${version.coveralls-maven-plugin}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.asciidoctor</groupId>
-					<artifactId>asciidoctor-maven-plugin</artifactId>
-					<version>${version.asciidoctor-maven-plugin}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>${version.maven-site-plugin}</version>
-					<dependencies>
-						<dependency>
-							<!-- | allows markdown syntax for site generation. To use it place 
-								files below | src/site/markdown/[filename].md -->
-							<groupId>org.apache.maven.doxia</groupId>
-							<artifactId>doxia-module-markdown</artifactId>
-							<version>1.3</version>
-						</dependency>
-					</dependencies>
-					<configuration>
-						<skipDeploy>true</skipDeploy>
-					</configuration>
-				</plugin>
+			<plugin>
+				<!-- GENERATE ~source.jar -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${version.maven-source-plugin}</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
+			<plugin>
+				<!-- GENERATE ~javadoc.jar -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${version.maven-javadoc-plugin}</version>
 
-			</plugins>
-		</pluginManagement>
+				<configuration>
+					<source>1.8</source>
+					<doclint>none</doclint>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<!-- unit tests -->
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${version.jacoco-maven-plugin}</version>
+				<executions>
+					<!-- Prepare execution with Surefire -->
+					<execution>
+						<id>pre-unit-test</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+						<configuration>
+							<propertyName>surefireArgLine</propertyName>
+						</configuration>
+					</execution>
+					<!-- Generate report after tests are run -->
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${version.maven-surefire-plugin}</version>
+				<configuration>
+					<argLine>${surefireArgLine}</argLine>
+					<includes>
+						<include>**/*Test.java</include>
+						<include>**/*Tests.java</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>run-unit-tests</id>
+						<goals>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>${version.maven-surefire-plugin}</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>${version.coveralls-maven-plugin}</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>${version.maven-site-plugin}</version>
+				<dependencies>
+					<dependency>
+						<!-- | allows markdown syntax for site generation. To use it place 
+							files below | src/site/markdown/[filename].md -->
+						<groupId>org.apache.maven.doxia</groupId>
+						<artifactId>doxia-module-markdown</artifactId>
+						<version>1.3</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<skipDeploy>true</skipDeploy>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<!-- for signing components -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<!-- for deployment to MAVEN CENTRAL -->
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
+				<executions>
+					<execution>
+						<id>default-deploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<!-- for deployment to MAVEN CENTRAL -->
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 </project>
