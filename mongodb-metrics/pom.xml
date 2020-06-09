@@ -4,13 +4,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>de.keawe.metrics</groupId>
-		<artifactId>mongodb-metrics-parent</artifactId>
-		<version>0.0.3</version>
-	</parent>
-
+	<groupId>de.keawe.metrics</groupId>
 	<artifactId>mongodb-metrics</artifactId>
+	<version>0.0.4</version>
 	<packaging>jar</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Reporter extension for the Codahale/DropWizard Metrics library which stores data in MongoDB</description>
@@ -70,23 +66,108 @@
 		</repository>
 	</distributionManagement>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- maven-compiler-plugin -->
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+
+		<version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
+
+		<version.asciidoctor-maven-plugin>1.6.0</version.asciidoctor-maven-plugin>
+		<version.coveralls-maven-plugin>4.3.0</version.coveralls-maven-plugin>
+		<version.de.flapdoodle.embed.mongo>2.2.0</version.de.flapdoodle.embed.mongo>
+		<version.jacoco-maven-plugin>0.8.5</version.jacoco-maven-plugin>
+		<version.junit>4.13</version.junit>
+		<version.logback-classic>1.2.3</version.logback-classic>
+		<version.maven-gpg-plugin>1.6</version.maven-gpg-plugin>
+		<version.maven-javadoc-plugin>3.2.0</version.maven-javadoc-plugin>
+		<version.maven-release-plugin>2.5.3</version.maven-release-plugin>
+		<version.maven-site-plugin>3.9.0</version.maven-site-plugin>
+		<version.maven-source-plugin>3.2.1</version.maven-source-plugin>
+		<version.maven-surefire-plugin>2.22.2</version.maven-surefire-plugin>
+		<version.metrics-core>4.1.9</version.metrics-core>
+		<version.mockito-core>3.3.3</version.mockito-core>
+		<version.mongo-java-driver>3.12.5</version.mongo-java-driver>
+		<version.slf4j-api>1.7.30</version.slf4j-api>
+		<version.site-maven-plugin>0.12</version.site-maven-plugin>
+	</properties>
+	
+		<dependencyManagement>
+		<dependencies>
+			<!-- ==================== -->
+			<!-- CORE DEPENDENCIES -->
+			<!-- ==================== -->
+			<dependency>
+				<groupId>io.dropwizard.metrics</groupId>
+				<artifactId>metrics-core</artifactId>
+				<version>${version.metrics-core}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mongodb</groupId>
+				<artifactId>mongo-java-driver</artifactId>
+				<version>${version.mongo-java-driver}</version>
+			</dependency>
+			<!-- ==================== -->
+			<!-- LOGGING DEPENDENCIES -->
+			<!-- ==================== -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${version.slf4j-api}</version>
+			</dependency>
+			<!-- ==================== -->
+			<!-- TEST DEPENDENCIES -->
+			<!-- ==================== -->
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${version.logback-classic}</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${version.junit}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${version.mockito-core}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.flapdoodle.embed</groupId>
+				<artifactId>de.flapdoodle.embed.mongo</artifactId>
+				<version>${version.de.flapdoodle.embed.mongo}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${version.maven-compiler-plugin}</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
+
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${version.jacoco-maven-plugin}</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${version.maven-surefire-plugin}</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>${version.maven-surefire-plugin}</version>
 			</plugin>
 			<plugin>
 				<!-- GENERATE ~source.jar -->
@@ -125,7 +206,7 @@
 				<!-- for signing components -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.5</version>
+				<version>${version.maven-gpg-plugin}</version>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
