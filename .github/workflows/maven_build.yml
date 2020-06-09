@@ -30,10 +30,7 @@ jobs:
       
     - name: Publish package
       run: |
-        export GPG_TTY=$(tty)
-        which gpg
-        git config --global gpg.program $(which gpg)
-        mvn -e clean deploy
+        mvn clean deploy
       env:
         MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
         MAVEN_PASSWORD: ${{ secrets.OSSRH_PASS }}
