@@ -20,18 +20,11 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
-    - name: Cache Maven packages
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
-    - name: Prepare artifact directory
-      run: mkdir -p staging && find . -name *.jar ! -path '*staging*' -exec cp -v {} staging \;
-    - name: Upload artifact
-      uses: actions/upload-artifact@v1
-      with:
-        name: Package
-        path: staging
+        server-id: ossrh
+        server-username: ${{ secrets.OSSRH_USER }}
+        server-password: ${{ secrets.OSSRH_PASS }}
+    - name: Publish package
+      run: mvn clean deploy
+      env:
+        MAVEN_USERNAME: ${{ OSSRH_USER }}
+        MAVEN_PASSWORD: ${{ OSSRH_PASS }}
