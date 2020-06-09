@@ -27,8 +27,8 @@ jobs:
       env:
         GPG_KEY: ${{ secrets.SIG_KEY_PRIV }}
       run: |
-        printf "$GPG_KEY" | base64 --decode | gpg --import --no-tty --batch --yes
-        gpg --list-secret-keys
+        export GPG_TTY=$(tty)
+        printf "$GPG_KEY" | base64 --decode | gpg --import
       
     - name: Publish package
       run: mvn clean deploy
