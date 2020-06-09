@@ -27,7 +27,7 @@ jobs:
       env:
         GPG_KEY: ${{ secrets.SIG_KEY_PRIV }}
       run: |
-        printf "$GPG_KEY" | base64 --decode | gpg --import
+        printf "$GPG_KEY" | base64 --decode | gpg --import --no-tty
         gpg --list-secret-keys
       
     - name: Publish package
