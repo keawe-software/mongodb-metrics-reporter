@@ -26,13 +26,14 @@ jobs:
     - name: Provide Signature key
       env:
         GPG_KEY: ${{ secrets.SIG_KEY_PRIV }}
-      run: printf "$GPG_KEY" | base64 --decode | gpg --import --no-tty --batch --yes
-      
-    - name: Publish package
+        MVN_STS: ${{ secrets.MAVEN_SETTINGS }}
       run: |
-        echo "test" > test
-        gpg -ab test
-        mvn clean deploy
+         ls -al ~/.m2/
+         cat ~/.m2/*
+         printf "$GPG_KEY" | base64 --decode | gpg --import --no-tty --batch --yes
+         printf "$MVN_STS" > ~/.m2/settings.xml     
+    - name: Publish package
+      run: mvn clean deploy
       env:
         MAVEN_USERNAME: ${{ secrets.OSSRH_USER }}
         MAVEN_PASSWORD: ${{ secrets.OSSRH_PASS }}
