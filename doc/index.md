@@ -1,64 +1,26 @@
-= mongodb-metrics-reporter
-:project-full-path: aparnachaudhary/mongodb-metrics-reporter
+# Introduction
 
-image:https://github.com/keawe-software/mongodb-metrics-reporter/workflows/Java%20CI%20with%20Maven/badge.svg["Build Status",link="https://github.com/keawe-software/mongodb-metrics-reporter/actions?query=workflow%3A%22Java+CI+with+Maven%22"]
-image:http://img.shields.io/badge/license-APACHE2-blue.svg["Apache License", link="https://www.apache.org/licenses/LICENSE-2.0.html"]
+The __mongodb-metrics__ module provides __MongoDBReporter__, which allows your application to constantly stream metric values to a MongoDB server.
 
-This project provides a reporter for CodaHale/DropWizard Metrics library to store the metric data in MongoDB.
+![Metrics-MongoDB](images/MetricsMongoDB.png)
 
-== How does it work?
+[getting started] | [Java SE] | [Java EE]
 
-. Define MetricsRegistry which is a JVM wide singleton for metric data
-. Metrics Reporter is associated with the Metrics Registry
-. Application services are instrumented with DropWizard Metrics
-. The reporter reads the data from registry at fixed defined interval and writes this data to the MongoDB datastore is the relevant collection
-
-image::MetricsMongoDB.png[]
-
-== Build Requirements:
-
-* Apache Maven version 3.x
-* Java8
-
-== Building
-
-Clone the repository using command
-
-[source,bash]
-----
-git clone git://github.com/aparnachaudhary/mongodb-metrics-reporter.git
-----
-
-To build, issue this from the command line
-
-[source,bash]
-----
-mvn clean install
-----
-
-== Dependencies
-
-The module has following compile time dependencies
-
-* io.dropwizard.metrics:metrics-core:jar:3.1.2
-* org.mongodb:mongo-java-driver:jar:3.1.1
-* org.slf4j:slf4j-api:jar:1.7.13
-
-== Usage
+## Usage
 
 Add the following dependency to your project's Maven POM file.
 
-[source,xml]
-----
+```xml
     <dependency>
         <groupId>io.github.aparnachaudhary</groupId>
         <artifactId>mongodb-metrics</artifactId>
         <version>${version.mongodb-reporter}</version>
     </dependency>
-----
+```
 
-[source,java]
-----
+Usage in Java code:
+
+```java
         // create metric registry
         MetricRegistry metricRegistry = new MetricRegistry();
         // register JVM metrics
@@ -81,14 +43,13 @@ Add the following dependency to your project's Maven POM file.
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-----
+```
 
 Executing the above program creates two collections (counter and gauge) in javasedemo database.
 
 *Counter collection:*
 
-[source]
-----
+```json
 /* 0 */
 {
     "_id" : ObjectId("565b3b7ec8f3530f3a327001"),
@@ -104,14 +65,13 @@ Executing the above program creates two collections (counter and gauge) in javas
     "count" : 1,
     "timestamp" : ISODate("2015-11-29T17:53:07Z")
 }
-----
+```
 
 *Gauge collection:*
 
 Since we also registered the _JvmAttributeGaugeSet_; JVM metrics are registered in the _gauge_ collection.
 
-[source]
-----
+```json
 /* 0 */
 {
     "_id" : ObjectId("565b3b7ec8f3530f3a326ffe"),
@@ -159,14 +119,17 @@ Since we also registered the _JvmAttributeGaugeSet_; JVM metrics are registered 
     "value" : "Oracle Corporation Java HotSpot(TM) 64-Bit Server VM 25.5-b02 (1.8)",
     "timestamp" : ISODate("2015-11-29T17:53:07Z")
 }
-----
+```
 
-
-
-== Samples
+## Samples
 
 Sample applications demonstrating the use of Metrics library with MongoDB reporter.
 
 * JavaSE application - https://github.com/aparnachaudhary/mongodb-metrics-demo/tree/master/javase-demo
 * CDI application - https://github.com/aparnachaudhary/mongodb-metrics-demo/tree/master/cdi-demo
 * JavaEE application - https://github.com/aparnachaudhary/mongodb-metrics-demo/tree/master/javaee-demo
+
+
+[getting started]: getting_started.md
+[Java SE]: Java_SE.md
+[Java EE]: Java_EE.md
