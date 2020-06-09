@@ -5,9 +5,7 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    tags: '[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   build:
@@ -20,17 +18,13 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11
-        server-id: ossrh
-        server-username: ${{ secrets.OSSRH_USER }}
-        server-password: ${{ secrets.OSSRH_PASS }}
-    - name: Provide Signature key
+    - name: Provide Signature Key
       env:
         GPG_KEY: ${{ secrets.SIG_KEY_PRIV }}
         MVN_STS: ${{ secrets.MAVEN_SETTINGS }}
       run: |
-         printf "$GPG_KEY" | base64 --decode | gpg --import --no-tty --batch --yes
-         printf "$MVN_STS" > ~/.m2/settings.xml
-         cat ~/.m2/settings.xml     
+         printf "$GPG_KEY" | base64 --decode | gpg --import --no-tty --batch --yes # import PGP private key
+         printf "$MVN_STS" > ~/.m2/settings.xml # provide credentials for key and maven central
     - name: Publish package
       run: mvn clean deploy
       env:
