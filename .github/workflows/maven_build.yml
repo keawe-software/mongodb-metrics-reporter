@@ -28,10 +28,9 @@ jobs:
         GPG_KEY: ${{ secrets.SIG_KEY_PRIV }}
         MVN_STS: ${{ secrets.MAVEN_SETTINGS }}
       run: |
-         ls -al ~/.m2/
-         cat ~/.m2/*
          printf "$GPG_KEY" | base64 --decode | gpg --import --no-tty --batch --yes
-         printf "$MVN_STS" > ~/.m2/settings.xml     
+         printf "$MVN_STS" > ~/.m2/settings.xml
+         cat ~/.m2/settings.xml     
     - name: Publish package
       run: mvn clean deploy
       env:
