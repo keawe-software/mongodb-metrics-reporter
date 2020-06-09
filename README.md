@@ -1,42 +1,40 @@
-= mongodb-metrics-reporter
-:project-full-path: aparnachaudhary/mongodb-metrics-reporter
+# mongodb-metrics-reporter
 
-image:https://github.com/keawe-software/mongodb-metrics-reporter/workflows/Java%20CI%20with%20Maven/badge.svg["Build Status",link="https://github.com/keawe-software/mongodb-metrics-reporter/actions?query=workflow%3A%22Java+CI+with+Maven%22"]
-image:http://img.shields.io/badge/license-APACHE2-blue.svg["Apache License", link="https://www.apache.org/licenses/LICENSE-2.0.html"]
+[![Build Status](https://github.com/keawe-software/mongodb-metrics-reporter/workflows/Java%20CI%20with%20Maven/badge.svg)](https://github.com/keawe-software/mongodb-metrics-reporter/actions?query=workflow%3A%22Java+CI+with+Maven%22)
+
+[![Apache License](http://img.shields.io/badge/license-APACHE2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 This project provides a reporter for CodaHale/DropWizard Metrics library to store the metric data in MongoDB.
 
-== How does it work?
+## How does it work?
 
-. Define MetricsRegistry which is a JVM wide singleton for metric data
-. Metrics Reporter is associated with the Metrics Registry
-. Application services are instrumented with DropWizard Metrics
-. The reporter reads the data from registry at fixed defined interval and writes this data to the MongoDB datastore is the relevant collection
+1. Define MetricsRegistry which is a JVM wide singleton for metric data
+2. Metrics Reporter is associated with the Metrics Registry
+3. Application services are instrumented with DropWizard Metrics
+4. The reporter reads the data from registry at fixed defined interval and writes this data to the MongoDB datastore is the relevant collection
 
-image::MetricsMongoDB.png[]
+![MongoDB-Metrics](doc/images/MetricsMongoDB.png)
 
-== Build Requirements:
+## Build Requirements:
 
 * Apache Maven version 3.x
 * Java8
 
-== Building
+## Building
 
 Clone the repository using command
 
-[source,bash]
-----
+```bash
 git clone git://github.com/aparnachaudhary/mongodb-metrics-reporter.git
-----
+```
 
 To build, issue this from the command line
 
-[source,bash]
-----
+```bash
 mvn clean install
-----
+```
 
-== Dependencies
+## Dependencies
 
 The module has following compile time dependencies
 
@@ -44,21 +42,21 @@ The module has following compile time dependencies
 * org.mongodb:mongo-java-driver:jar:3.1.1
 * org.slf4j:slf4j-api:jar:1.7.13
 
-== Usage
+## Usage
 
 Add the following dependency to your project's Maven POM file.
 
-[source,xml]
-----
+```xml
     <dependency>
         <groupId>io.github.aparnachaudhary</groupId>
         <artifactId>mongodb-metrics</artifactId>
         <version>${version.mongodb-reporter}</version>
     </dependency>
-----
+```
 
-[source,java]
-----
+Usage in Java code:
+
+```java
         // create metric registry
         MetricRegistry metricRegistry = new MetricRegistry();
         // register JVM metrics
@@ -81,14 +79,13 @@ Add the following dependency to your project's Maven POM file.
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-----
+```
 
 Executing the above program creates two collections (counter and gauge) in javasedemo database.
 
 *Counter collection:*
 
-[source]
-----
+```json
 /* 0 */
 {
     "_id" : ObjectId("565b3b7ec8f3530f3a327001"),
@@ -104,14 +101,13 @@ Executing the above program creates two collections (counter and gauge) in javas
     "count" : 1,
     "timestamp" : ISODate("2015-11-29T17:53:07Z")
 }
-----
+```
 
 *Gauge collection:*
 
 Since we also registered the _JvmAttributeGaugeSet_; JVM metrics are registered in the _gauge_ collection.
 
-[source]
-----
+```json
 /* 0 */
 {
     "_id" : ObjectId("565b3b7ec8f3530f3a326ffe"),
@@ -159,11 +155,9 @@ Since we also registered the _JvmAttributeGaugeSet_; JVM metrics are registered 
     "value" : "Oracle Corporation Java HotSpot(TM) 64-Bit Server VM 25.5-b02 (1.8)",
     "timestamp" : ISODate("2015-11-29T17:53:07Z")
 }
-----
+```
 
-
-
-== Samples
+## Samples
 
 Sample applications demonstrating the use of Metrics library with MongoDB reporter.
 
