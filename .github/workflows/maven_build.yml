@@ -23,6 +23,10 @@ jobs:
         server-id: ossrh
         server-username: ${{ secrets.OSSRH_USER }}
         server-password: ${{ secrets.OSSRH_PASS }}
+    - name: Provide Signature key
+      env:
+        GPG_KEY: ${{ secrets.SIG_KEY_PRIV }}
+        run: printf "$GPG_KEY" | base64 --decode | gpg --import && gpg --list-secret-keys
     - name: Publish package
       run: mvn clean deploy
       env:
