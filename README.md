@@ -1,6 +1,6 @@
 # mongodb-metrics-reporter
 
-[![Build Status](https://github.com/keawe-software/mongodb-metrics-reporter/workflows/Java%20CI%20with%20Maven/badge.svg)](https://github.com/keawe-software/mongodb-metrics-reporter/actions?query=workflow%3A%22Java+CI+with+Maven%22) [![Apache License](http://img.shields.io/badge/license-APACHE2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html) ![maven status](https://img.shields.io/maven-central/v/de.keawe.metrics/mongodb-metrics.svg)
+[![Build Status](https://github.com/keawe-software/mongodb-metrics-reporter/workflows/Build,%20Test%20&%20Deploy%20to%20Maven%20Central/badge.svg)](https://github.com/keawe-software/mongodb-metrics-reporter/actions) [![Apache License](http://img.shields.io/badge/license-APACHE2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html) ![maven status](https://img.shields.io/maven-central/v/de.keawe.metrics/mongodb-metrics.svg)
 
 *MongoDB-Metrics-Reporter* provides a reporter for CodaHale/DropWizard Metrics library to store the metric data in MongoDB.
 This is a fork of [aparnachaudhary/mongodb-metrics-reporter](https://github.com/aparnachaudhary/mongodb-metrics-reporter), which seems to be *discontinued*.
