@@ -5,11 +5,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.keawe.metrics</groupId>
 	<artifactId>mongodb-metrics</artifactId>
-	<version>0.0.6</version>
+	<version>0.0.7</version>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>Reporter extension for the Codahale/DropWizard Metrics library that stores data in MongoDB</description>
 	<url>http://github.com/keawe-software/mongodb-metrics-reporter</url>
 	<inceptionYear>2015</inceptionYear>
+	<packaging>bundle</packaging>
 
 	<licenses>
 		<license>
@@ -262,13 +263,27 @@
 			</plugin>
 
 			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Export-Package>io.github.*</Export-Package>
+						<Bundle-Name>io.github.aparnachaudhary.metrics</Bundle-Name>
+						<Bundle-SymbolicName>io.github.aparnachaudhary.metrics</Bundle-SymbolicName>
+						<Bundle-Category>lib,metrics,mongodb</Bundle-Category>
+					</instructions>
+				</configuration>
+			</plugin>
+
+			<plugin>
 				<!-- for signing components -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
 				<version>1.5</version>
 				<configuration>
 					<gpgArguments>
-						<arg>--batch</arg>					
+						<arg>--batch</arg>
 						<arg>--pinentry-mode</arg>
 						<arg>loopback</arg>
 					</gpgArguments>
