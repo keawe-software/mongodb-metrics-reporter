@@ -28,7 +28,7 @@
 		<version.metrics-core>4.1.9</version.metrics-core>
 		<version.mockito-core>3.3.3</version.mockito-core>
 		<version.mongo-java-driver>3.12.5</version.mongo-java-driver>
-		<version.nexus-staging-maven-plugin>1.6.7</version.nexus-staging-maven-plugin>
+		<version.nexus-staging-maven-plugin>1.6.8</version.nexus-staging-maven-plugin>
 		<version.slf4j-api>1.7.30</version.slf4j-api>
 	</properties>
 	
